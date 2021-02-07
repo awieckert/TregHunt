@@ -9,7 +9,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-./PubmedSearch-dev.xlsx
+**/PubmedSearch-dev.xlsx
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
