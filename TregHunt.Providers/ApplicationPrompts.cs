@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using TregHunt.Contracts.Services;
-using Microsoft.Extensions.Configuration;
 
 
-namespace TregHunt.Services
+namespace TregHunt.Providers
 {
     public class ApplicationPrompts : IApplicationPrompts
     {
-        private IConfiguration _config;
-
-        public ApplicationPrompts(IConfiguration config)
+        public ApplicationPrompts()
         {
-            _config = config;
         }
         public void Greeting()
         {

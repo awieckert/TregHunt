@@ -23,7 +23,8 @@ namespace TregHunt.Bootstrap
 
                 c.Scan(scanner =>
                 {
-                    scanner.AssembliesFromApplicationBaseDirectory();
+                    scanner.AssembliesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("TregHunt", StringComparison.OrdinalIgnoreCase));
+                    scanner.Assembly("TregHunt.Providers");
                     scanner.WithDefaultConventions();
                 });
             });
