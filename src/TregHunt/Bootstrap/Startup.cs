@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using TregHunt.Services.Settings;
 
 namespace TregHunt.Bootstrap
 {
@@ -24,7 +25,7 @@ namespace TregHunt.Bootstrap
                 c.Scan(scanner =>
                 {
                     scanner.AssembliesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("TregHunt", StringComparison.OrdinalIgnoreCase));
-                    scanner.Assembly("TregHunt.Providers");
+                    scanner.With(new SettingsConvention(config));
                     scanner.WithDefaultConventions();
                 });
             });

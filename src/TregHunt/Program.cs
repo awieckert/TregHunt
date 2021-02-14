@@ -15,20 +15,9 @@ namespace TregHunt
 
             applicationPrompts.Greeting();
 
-            //var filePath = GetUserFileLocation(Configuration);
-        }
+            var filePath = applicationPrompts.GetFilePathFromUser();
 
-        private static string GetUserFileLocation(IConfiguration config)
-        {
-
-
-            var userFilePath = Console.ReadLine();
-            if (userFilePath.Equals("d", StringComparison.OrdinalIgnoreCase))
-            {
-                return config["FileLocation"];
-            }
-
-            return userFilePath;
+            container.GetInstance<ISearchTermImporter>().Import(filePath);
         }
     }
 }
