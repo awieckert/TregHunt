@@ -28,7 +28,7 @@ namespace TregHunt.Services
 
 
             //TODO: I think I need to seperate out the importing process and the forming of the queries. It would be nice to be able to form queries for different DBs/Eutilities
-            //
+            //Think about how to let the user define the number of searches. Later.
             foreach (var item in primaryTerms)
             {
                 foreach (var term in secondaryTerms)
