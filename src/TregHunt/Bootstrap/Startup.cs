@@ -1,5 +1,6 @@
 ﻿using Lamar;
 using Microsoft.Extensions.Configuration;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,14 +21,15 @@ namespace TregHunt.Bootstrap
 
             var container = new Container(c => 
             {
-                c.For<IConfiguration>().Use(config);
-
                 c.Scan(scanner =>
                 {
                     scanner.AssembliesFromApplicationBaseDirectory(a => a.GetName().Name.StartsWith("TregHunt", StringComparison.OrdinalIgnoreCase));
                     scanner.With(new SettingsConvention(config));
                     scanner.WithDefaultConventions();
                 });
+
+                c.For<IConfiguration>().Use(config);
+                c.For<IRestClient>().Use<RestClient>();
             });
 
             return container;
