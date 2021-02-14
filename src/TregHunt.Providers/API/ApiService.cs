@@ -31,10 +31,10 @@ namespace TregHunt.Services.API
         {
             var request = CreateXmlRequest(Method.GET);
 
-            _restClient.BaseUrl = new Uri($"{_settings.BaseUrl}/{url}{(!string.IsNullOrWhiteSpace(_settings.ApiKey) ? _settings.ApiKey : "")}");
+            _restClient.BaseUrl = new Uri($"{_settings.BaseUrl}/{url}{(!string.IsNullOrWhiteSpace(_settings.ApiKey) ? $"&api_key={_settings.ApiKey}" : "")}");
 
             var response = _restClient.Get<T>(request);
-
+            //TODO: Data is coming back on the response.content. Investigate this.
             return response.Data;
         }
     }

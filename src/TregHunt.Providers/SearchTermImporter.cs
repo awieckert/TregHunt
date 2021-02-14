@@ -26,11 +26,14 @@ namespace TregHunt.Services
 
             var pubmedQueries = new List<PubMedQuery>();
 
+
+            //TODO: I think I need to seperate out the importing process and the forming of the queries. It would be nice to be able to form queries for different DBs/Eutilities
+            //
             foreach (var item in primaryTerms)
             {
                 foreach (var term in secondaryTerms)
                 {
-                    pubmedQueries.Add(new PubMedQuery { PrimaryTerm = item.Term, SecondaryTerm = term.Term, StrictSearch = true });
+                    pubmedQueries.Add(new PubMedQuery { PrimaryTerm = item.Term, SecondaryTerm = term.Term, StrictSearch = true, Eutility = "esearch.fcgi" });
                 }
             }
 

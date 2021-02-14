@@ -22,7 +22,7 @@ namespace TregHunt.Services
 
             foreach (var query in pubMedQueries)
             {
-                var response = _pubMedApiService.Get<PubMedESearchResponse>($"?db=pubmed&term={query.PrimaryTerm}+AND+{query.SecondaryTerm}&tool={_settings.ApplicationName}&email={_settings.DevEmail}");
+                var response = _pubMedApiService.Get<PubMedESearchResponse>($@"{query.Eutility}?db=pubmed&term={query.PrimaryTerm}+AND+{query.SecondaryTerm}&tool={_settings.ApplicationName}&email={_settings.DevEmail}");
             }
 
             return allResponses;

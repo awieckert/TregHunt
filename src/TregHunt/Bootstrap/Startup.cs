@@ -15,7 +15,8 @@ namespace TregHunt.Bootstrap
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, true);
+                .AddJsonFile("appsettings.json", false, true)
+                .AddJsonFile($"appsettings.{CurrentEnvironment}.json", true, true);
 
             var config = builder.Build();
 
@@ -34,5 +35,19 @@ namespace TregHunt.Bootstrap
 
             return container;
         }
+
+        public static string CurrentEnvironment
+        {
+            get
+            {
+                var environmentName = Environment.GetEnvironmentVariable("TREGHUNT_ENVIRONMENT");
+
+                Console.WriteLine($"Current environment is {environmentName}");
+
+                return environmentName;
+            }
+        }
     }
+
+
 }

@@ -9,5 +9,6 @@ namespace TregHunt.Contracts.Models
         public string PrimaryTerm { get; set; }
         public string SecondaryTerm { get; set; }
         public bool StrictSearch { get; set; }
+        public string Eutility { get; set; }
     }
 }
