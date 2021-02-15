@@ -6,6 +6,6 @@ namespace TregHunt.Contracts.Models
 {
     public class PubMedESearchResponse
     {
-        public IEnumerable<string> IdList { get; set; }
+        public List<string> IdList { get; set; }
     }
 }

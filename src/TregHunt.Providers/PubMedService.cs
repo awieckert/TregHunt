@@ -22,6 +22,7 @@ namespace TregHunt.Services
 
             foreach (var query in pubMedQueries)
             {
+                //TODO: Extract out the query string building, this way we can have any number of search terms
                 var response = _pubMedApiService.Get<PubMedESearchResponse>($@"{query.Eutility}?db=pubmed&term={query.PrimaryTerm}+AND+{query.SecondaryTerm}&tool={_settings.ApplicationName}&email={_settings.DevEmail}");
             }
 

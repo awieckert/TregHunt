@@ -22,20 +22,26 @@ namespace TregHunt.Services.API
         RestRequest CreateXmlRequest(Method method)
         {
             var request = new RestRequest(method);
-            request.AddHeader("content-type", "application/xml");
-            request.XmlSerializer = new XmlRestSerializer();
+            _restClient.ThrowOnAnyError = true;
             return request;
         }
 
         public T Get<T>(string url) where T : class, new()
         {
-            var request = CreateXmlRequest(Method.GET);
+            try
+            {
+                var request = CreateXmlRequest(Method.GET);
 
-            _restClient.BaseUrl = new Uri($"{_settings.BaseUrl}/{url}{(!string.IsNullOrWhiteSpace(_settings.ApiKey) ? $"&api_key={_settings.ApiKey}" : "")}");
+                _restClient.BaseUrl = new Uri($"{_settings.BaseUrl}/{url}{(!string.IsNullOrWhiteSpace(_settings.ApiKey) ? $"&api_key={_settings.ApiKey}" : "")}");
 
-            var response = _restClient.Get<T>(request);
-            //TODO: Data is coming back on the response.content. Investigate this.
-            return response.Data;
+                var response = _restClient.Get<T>(request);
+                //TODO: Data is coming back on the response.content. Investigate this.
+                return response.Data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
