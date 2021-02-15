@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "TregHunt": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "TREGHUNT_ENVIRONMENT": "development"
+      }
+    }
+  }
+}
