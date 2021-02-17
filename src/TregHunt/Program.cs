@@ -17,7 +17,9 @@ namespace TregHunt
 
             var filePath = applicationPrompts.GetFilePathFromUser();
 
-            container.GetInstance<ISearchTermImporter>().Import(filePath);
+            var pubMedQueries = container.GetInstance<ISearchTermImporter>().Import(filePath);
+
+            container.GetInstance<IPubMedService>().PubMedESearch(pubMedQueries);
         }
     }
 }

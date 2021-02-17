@@ -19,7 +19,7 @@ namespace TregHunt.Services.API
             _restClient = restClient;
         }
 
-        RestRequest CreateXmlRequest(Method method)
+        RestRequest CreateRequest(Method method)
         {
             var request = new RestRequest(method);
             _restClient.ThrowOnAnyError = true;
@@ -30,18 +30,23 @@ namespace TregHunt.Services.API
         {
             try
             {
-                var request = CreateXmlRequest(Method.GET);
+                var request = CreateRequest(Method.GET);
 
                 _restClient.BaseUrl = new Uri($"{_settings.BaseUrl}/{url}{(!string.IsNullOrWhiteSpace(_settings.ApiKey) ? $"&api_key={_settings.ApiKey}" : "")}");
 
                 var response = _restClient.Get<T>(request);
-                //TODO: Data is coming back on the response.content. Investigate this.
+
                 return response.Data;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
+        }
+
+        public TResult Post<TBody, TResult>(string url, TBody content) where TResult : class, new()
+        {
+            var request = CreateRequest(Method.POST);
         }
     }
 }

@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TregHunt.Contracts.Models;
 
 namespace TregHunt.Contracts.Services
 {
     public interface ISearchTermImporter
     {
-        void Import(string filePath);
+        IEnumerable<PubMedQuery> Import(string filePath);
     }
 }

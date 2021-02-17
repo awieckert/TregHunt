@@ -5,6 +5,6 @@ namespace TregHunt.Contracts.Services
 {
     public interface IPubMedService
     {
-        IEnumerable<PubMedESearchResponse> GetArticleUIDs(IEnumerable<PubMedQuery> pubMedQueries);
+        IEnumerable<PubMedESearchResponse> PubMedESearch(IEnumerable<PubMedQuery> pubMedQueries);
     }
 }

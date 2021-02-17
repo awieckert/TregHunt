@@ -1,14 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using TregHunt.Contracts.Mappers;
+using TregHunt.Contracts.Models;
 
 namespace TregHunt.Services.Mappers
 {
-    public class PubMedMapper : IMapper
+    public class PubMedMapper : IPubMedMapper
     {
-        public T Map<T, T1>(T destination, T1 source)
+        public IEnumerable<Article> Map(PubMedESearchResponse source)
         {
+            var articles = new List<Article>();
+            foreach (var id in source.IdList)
+            {
+                Int64 parsedId;
+                Int64.TryParse(id, out parsedId);
+
+                articles.Add(new Article { Id = parsedId });
+            }
+
+            return articles;
         }
     }
 }

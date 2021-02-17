@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TregHunt.Contracts.Models;
 
 namespace TregHunt.Contracts.Mappers
 {
     //TODO: make this a generic mapper class
-    public interface IMapper
+    public interface IPubMedMapper
     {
-        T Map<T, T1>(T destination, T1 source); 
+        IEnumerable<Article> Map(PubMedESearchResponse source);
     }
 }
