@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using RestSharp;
+using RestSharp.Deserializers;
 using RestSharp.Serialization.Xml;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,15 @@ namespace TregHunt.Services.API
             return request;
         }
 
+        RestRequest CreateXmlRequest(Method method)
+        {
+            var request = new RestRequest(method);
+            request.AddHeader("Accept", "application/xml");
+
+            _restClient.ThrowOnAnyError = true;
+            return request;
+        }
+
         public T Get<T>(string url) where T : class, new()
         {
             try
@@ -44,9 +55,22 @@ namespace TregHunt.Services.API
             }
         }
 
-        public TResult Post<TBody, TResult>(string url, TBody content) where TResult : class, new()
+        public string PostReturnXmlContent(string url)
         {
-            var request = CreateRequest(Method.POST);
+            try
+            {
+                var request = CreateXmlRequest(Method.POST);
+
+                _restClient.BaseUrl = new Uri($"{_settings.BaseUrl}/{url}{(!string.IsNullOrWhiteSpace(_settings.ApiKey) ? $"&api_key={_settings.ApiKey}" : "")}");
+
+                var response = _restClient.Post(request);
+
+                return response.Content;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

@@ -7,5 +7,6 @@ namespace TregHunt.Contracts.Services
     public interface IApiService
     {
         T Get<T>(string url) where T : class, new();
+        string PostReturnXmlContent(string url);
     }
 }
