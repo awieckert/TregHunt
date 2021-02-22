@@ -1,11 +1,18 @@
 ﻿using System.Collections.Generic;
 using TregHunt.Contracts.Helpers;
 using TregHunt.Contracts.Models;
+using TregHunt.Services.Settings;
 
 namespace TregHunt.Services.Helpers
 {
     public class QueryFormatter : IQueryFormatter
     {
+        readonly PubMedApiSettings _settings;
+
+        public QueryFormatter(PubMedApiSettings settings)
+        {
+            _settings = settings;
+        }
         public string FormatESearchQuery(PubMedQuery query)
         {
             return $@"{query.Eutility}?db=pubmed&term={query.PrimaryTerm}+AND+{query.SecondaryTerm}&tool={_settings.ApplicationName}&email={_settings.DevEmail}";

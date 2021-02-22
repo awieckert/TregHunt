@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using TregHunt.Contracts.Helpers;
 using TregHunt.Contracts.Models;
 using TregHunt.Contracts.Services;
@@ -31,15 +32,14 @@ namespace TregHunt.Services.Services
 
                 var postResponse = PubMedESummary(response);
 
-                var fullSearchResult = new PubMedESearchESumResponse
+                var fullSearchResult = new PubMedESearchESumResponse(query.PrimaryTerm, query.SecondaryTerm)
                 {
-                    PrimaryTerm = query.PrimaryTerm,
-                    SecondaryTerm = query.SecondaryTerm,
                     Uids = response.IdList,
                     Articles = postResponse.Articles
                 };
 
                 allResponses.Add(fullSearchResult);
+                Thread.Sleep(200);
             }
 
             return allResponses;

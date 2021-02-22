@@ -10,8 +10,6 @@ namespace TregHunt.Services
 {
     public class SearchTermImporter : ISearchTermImporter
     {
-        public SearchTermImporter(){}
-
         public IEnumerable<PubMedQuery> Import(string filePath)
         {
             var excel = new ExcelQueryFactory(filePath);

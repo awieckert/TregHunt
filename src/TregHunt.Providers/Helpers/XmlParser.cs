@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Xml;
-using TregHunt.Contracts.Services;
-using System.Linq;
 using TregHunt.Contracts.Models;
+using TregHunt.Contracts.Helpers;
 
 namespace TregHunt.Services.Services
 {
