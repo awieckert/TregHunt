@@ -2,17 +2,17 @@
 using System;
 using System.IO;
 using TregHunt.Contracts.Services;
-
+using TregHunt.Services.Settings;
 
 namespace TregHunt.Services
 {
     public class ApplicationPrompts : IApplicationPrompts
     {
-        readonly IConfiguration _config;
+        readonly FileSettings _fileSettings;
 
-        public ApplicationPrompts(IConfiguration config)
+        public ApplicationPrompts(FileSettings filesettings)
         {
-            _config = config;
+            _fileSettings = filesettings;
         }
         public void Greeting()
         {
@@ -36,7 +36,7 @@ namespace TregHunt.Services
                 var userFilePath = Console.ReadLine();
                 if (userFilePath.Equals("d", StringComparison.OrdinalIgnoreCase))
                 {
-                    filePath = _config["FileLocation"];
+                    filePath = _fileSettings.FileLocation;
                     doWhile = false;
                     continue;
                 }

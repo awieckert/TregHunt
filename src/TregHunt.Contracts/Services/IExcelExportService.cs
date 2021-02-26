@@ -5,8 +5,8 @@ using TregHunt.Contracts.Models;
 
 namespace TregHunt.Contracts.Services
 {
-    public interface ISearchTermImporter
+    public interface IExcelExportService
     {
-        IEnumerable<PubMedQuery> Import(string filePath);
+        void ExportESearchESumResult(IEnumerable<PubMedESearchESumResponse> results);
     }
 }

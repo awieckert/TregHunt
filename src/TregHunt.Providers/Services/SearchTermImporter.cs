@@ -10,14 +10,7 @@ namespace TregHunt.Services
 {
     public class SearchTermImporter : ISearchTermImporter
     {
-        readonly IPubMedService _pubMedService;
-
-        public SearchTermImporter(IPubMedService pubMedService)
-        {
-            _pubMedService = pubMedService;
-        }
-
-        public void Import(string filePath)
+        public IEnumerable<PubMedQuery> Import(string filePath)
         {
             var excel = new ExcelQueryFactory(filePath);
 
@@ -25,7 +18,6 @@ namespace TregHunt.Services
             var secondaryTerms = excel.Worksheet<SearchTerm>("SecondarySearchTerms").ToList().Where(x => !string.IsNullOrWhiteSpace(x.Term));
 
             var pubmedQueries = new List<PubMedQuery>();
-
 
             //TODO: I think I need to seperate out the importing process and the forming of the queries. It would be nice to be able to form queries for different DBs/Eutilities
             //Think about how to let the user define the number of searches. Later.
@@ -37,8 +29,7 @@ namespace TregHunt.Services
                 }
             }
 
-            _pubMedService.GetArticleUIDs(pubmedQueries);
-
+            return pubmedQueries;
         }
     }
 }

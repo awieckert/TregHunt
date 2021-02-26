@@ -1,4 +1,6 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using RestSharp;
+using RestSharp.Deserializers;
 using RestSharp.Serialization.Xml;
 using System;
 using System.Collections.Generic;
@@ -19,9 +21,18 @@ namespace TregHunt.Services.API
             _restClient = restClient;
         }
 
+        RestRequest CreateRequest(Method method)
+        {
+            var request = new RestRequest(method);
+            _restClient.ThrowOnAnyError = true;
+            return request;
+        }
+
         RestRequest CreateXmlRequest(Method method)
         {
             var request = new RestRequest(method);
+            request.AddHeader("Accept", "application/xml");
+
             _restClient.ThrowOnAnyError = true;
             return request;
         }
@@ -30,13 +41,31 @@ namespace TregHunt.Services.API
         {
             try
             {
-                var request = CreateXmlRequest(Method.GET);
+                var request = CreateRequest(Method.GET);
 
                 _restClient.BaseUrl = new Uri($"{_settings.BaseUrl}/{url}{(!string.IsNullOrWhiteSpace(_settings.ApiKey) ? $"&api_key={_settings.ApiKey}" : "")}");
 
                 var response = _restClient.Get<T>(request);
-                //TODO: Data is coming back on the response.content. Investigate this.
+
                 return response.Data;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string PostReturnXmlContent(string url)
+        {
+            try
+            {
+                var request = CreateXmlRequest(Method.POST);
+
+                _restClient.BaseUrl = new Uri($"{_settings.BaseUrl}/{url}{(!string.IsNullOrWhiteSpace(_settings.ApiKey) ? $"&api_key={_settings.ApiKey}" : "")}");
+
+                var response = _restClient.Post(request);
+
+                return response.Content;
             }
             catch (Exception ex)
             {

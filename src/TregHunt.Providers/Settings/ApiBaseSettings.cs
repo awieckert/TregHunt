@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace TregHunt.Services.Settings
 {
     public class ApiBaseSettings
