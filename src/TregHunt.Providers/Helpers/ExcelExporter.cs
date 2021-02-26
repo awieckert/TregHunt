@@ -20,6 +20,7 @@ namespace TregHunt.Services.Helpers
             try
             {
                 DataSet dataSet = new DataSet();
+                dataSet.DataSetName = dataTable.TableName;
                 dataSet.Tables.Add(dataTable);
 
                 // create a excel app, with workbook and worksheet and give a name to it
@@ -47,8 +48,8 @@ namespace TregHunt.Services.Helpers
                         }
                     }
                 }
-
-                excelWorkBook.SaveAs(_fileSettings.FileSaveLocation);
+                //add date time but it can't have slashes duuhhhh
+                excelWorkBook.SaveAs($"{_fileSettings.FileSaveLocation}{dataSet.DataSetName}");
                 excelWorkBook.Close();
                 excelApp.Quit();
             }
