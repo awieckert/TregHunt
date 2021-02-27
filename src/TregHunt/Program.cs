@@ -21,7 +21,11 @@ namespace TregHunt
 
             var eSearchESummaryResults = container.GetInstance<IPubMedService>().PubMedESearch(pubMedQueries);
 
-            container.GetInstance<IExcelExportService>().ExportESearchESumResult(eSearchESummaryResults);
+            var excelExporterService = container.GetInstance<IExcelExportService>();
+
+            var excelFriendResults = excelExporterService.FlattenESearchESumResult(eSearchESummaryResults);
+
+            excelExporterService.ExportESearchESumResult(excelFriendResults);
         }
     }
 }

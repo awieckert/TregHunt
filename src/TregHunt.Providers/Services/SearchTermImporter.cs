@@ -12,24 +12,32 @@ namespace TregHunt.Services
     {
         public IEnumerable<PubMedQuery> Import(string filePath)
         {
-            var excel = new ExcelQueryFactory(filePath);
-
-            var primaryTerms = excel.Worksheet<SearchTerm>("PrimarySearchTerms").ToList().Where(x => !string.IsNullOrWhiteSpace(x.Term));
-            var secondaryTerms = excel.Worksheet<SearchTerm>("SecondarySearchTerms").ToList().Where(x => !string.IsNullOrWhiteSpace(x.Term));
-
-            var pubmedQueries = new List<PubMedQuery>();
-
-            //TODO: I think I need to seperate out the importing process and the forming of the queries. It would be nice to be able to form queries for different DBs/Eutilities
-            //Think about how to let the user define the number of searches. Later.
-            foreach (var item in primaryTerms)
+            try
             {
-                foreach (var term in secondaryTerms)
-                {
-                    pubmedQueries.Add(new PubMedQuery { PrimaryTerm = item.Term, SecondaryTerm = term.Term, StrictSearch = true, Eutility = "esearch.fcgi" });
-                }
-            }
+                var excel = new ExcelQueryFactory(filePath);
 
-            return pubmedQueries;
+                var primaryTerms = excel.Worksheet<SearchTerm>("PrimarySearchTerms").ToList().Where(x => !string.IsNullOrWhiteSpace(x.Term));
+                var secondaryTerms = excel.Worksheet<SearchTerm>("SecondarySearchTerms").ToList().Where(x => !string.IsNullOrWhiteSpace(x.Term));
+
+                var pubmedQueries = new List<PubMedQuery>();
+
+                //TODO: I think I need to seperate out the importing process and the forming of the queries. It would be nice to be able to form queries for different DBs/Eutilities
+                //Think about how to let the user define the number of searches. Later.
+                foreach (var item in primaryTerms)
+                {
+                    foreach (var term in secondaryTerms)
+                    {
+                        pubmedQueries.Add(new PubMedQuery { PrimaryTerm = item.Term, SecondaryTerm = term.Term, StrictSearch = true, Eutility = "esearch.fcgi" });
+                    }
+                }
+
+                return pubmedQueries;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Failed to import file {filePath}", ex);
+                throw;
+            }
         }
     }
 }

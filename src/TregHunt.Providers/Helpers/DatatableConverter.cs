@@ -13,6 +13,8 @@ namespace TregHunt.Services.Helpers
         {
             try
             {
+                Console.WriteLine("Creating data table from list of flattend search results");
+
                 // creating a data table instance and named it as the incoming T name
                 DataTable dataTable = new DataTable(typeof(T).Name);
 
@@ -45,7 +47,7 @@ namespace TregHunt.Services.Helpers
             }
             catch (Exception ex)
             {
-
+                Console.WriteLine($"Error coverting list to data table", ex);
                 throw ex;
             }
         }

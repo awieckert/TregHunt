@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using TregHunt.Contracts.Helpers;
+using TregHunt.Contracts.Models;
 using TregHunt.Services.Settings;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Linq;
 
 namespace TregHunt.Services.Helpers
 {
@@ -19,6 +22,8 @@ namespace TregHunt.Services.Helpers
         {
             try
             {
+                Console.WriteLine("Exporting data table to excel file.");
+
                 DataSet dataSet = new DataSet();
                 dataSet.DataSetName = dataTable.TableName;
                 dataSet.Tables.Add(dataTable);
@@ -55,6 +60,7 @@ namespace TregHunt.Services.Helpers
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Error exporting data table to excel file.", ex);
                 throw ex;
             }
         }

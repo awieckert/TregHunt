@@ -15,7 +15,9 @@ namespace TregHunt.Services.Helpers
         }
         public string FormatESearchQuery(PubMedQuery query)
         {
-            return $@"{query.Eutility}?db=pubmed&term={query.PrimaryTerm}+AND+{query.SecondaryTerm}&tool={_settings.ApplicationName}&email={_settings.DevEmail}";
+            var strictSearch = query.StrictSearch ? "%22" : "";
+
+            return $@"{query.Eutility}?db=pubmed&term={strictSearch}{query.PrimaryTerm}{strictSearch}+AND+{query.SecondaryTerm}&retmax={_settings.MaxReturnResults}&tool={_settings.ApplicationName}&email={_settings.DevEmail}";
         }
 
         public string FormatIdQueryString(IList<string> idList)

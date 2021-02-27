@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using TregHunt.Contracts.Helpers;
 using TregHunt.Contracts.Models;
@@ -24,32 +25,51 @@ namespace TregHunt.Services.Services
 
         public IEnumerable<PubMedESearchESumResponse> PubMedESearch(IEnumerable<PubMedQuery> pubMedQueries)
         {
-            var allResponses = new List<PubMedESearchESumResponse>();
-
-            foreach (var query in pubMedQueries)
+            try
             {
-                var response = _pubMedApiService.Get<PubMedESearchResponse>(_queryFormatter.FormatESearchQuery(query));
+                var allResponses = new List<PubMedESearchESumResponse>();
 
-                var postResponse = PubMedESummary(response);
-
-                var fullSearchResult = new PubMedESearchESumResponse(query.PrimaryTerm, query.SecondaryTerm)
+                foreach (var query in pubMedQueries)
                 {
-                    Uids = response.IdList,
-                    Articles = postResponse.Articles
-                };
+                    Console.WriteLine($"Searching for {query.PrimaryTerm} + {query.SecondaryTerm}");
 
-                allResponses.Add(fullSearchResult);
-                Thread.Sleep(200);
+                    var response = _pubMedApiService.Get<PubMedESearchResponse>(_queryFormatter.FormatESearchQuery(query));
+
+                    if (response.IdList.Count == 0) continue;
+
+                    Console.WriteLine($"ESearch successful for {query.PrimaryTerm} + {query.SecondaryTerm}");
+
+                    var postResponse = PubMedESummary(response);
+
+                    var fullSearchResult = new PubMedESearchESumResponse(query.PrimaryTerm, query.SecondaryTerm) 
+                    {
+                        Uids = response.IdList,
+                        Articles = postResponse.Articles
+                    };
+
+                    allResponses.Add(fullSearchResult);
+                    Thread.Sleep(200);
+                }
+
+                Console.WriteLine($"Pubmed Search/ESum Completed Successfully.");
+
+                return allResponses;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error searhcing pub med", ex);
+                throw;
             }
 
-            return allResponses;
         }
 
         public PubMedESummaryResponse PubMedESummary(PubMedESearchResponse idList)
         {
+            Console.WriteLine($"Formating ESummary Post");
+
             string ids = _queryFormatter.FormatIdQueryString(idList.IdList);
 
-            var response = _pubMedApiService.PostReturnXmlContent($"esummary.fcgi?db=pubmed&id={ids}&tool={_settings.ApplicationName}&email={_settings.DevEmail}");
+            var response = _pubMedApiService.PostReturnXmlContent($"esummary.fcgi?db=pubmed&id={ids}&retmax={_settings.MaxReturnResults}&tool={_settings.ApplicationName}&email={_settings.DevEmail}");
 
             return new PubMedESummaryResponse()
             {
