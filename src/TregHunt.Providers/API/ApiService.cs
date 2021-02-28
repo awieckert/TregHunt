@@ -51,7 +51,8 @@ namespace TregHunt.Services.API
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine($"Failed to complete search for query {url}", ex);
+                throw;
             }
         }
 
@@ -69,7 +70,8 @@ namespace TregHunt.Services.API
             }
             catch (Exception ex)
             {
-                throw ex;
+                Console.WriteLine($"Failed to Post for query {url}", ex);
+                throw;
             }
         }
     }

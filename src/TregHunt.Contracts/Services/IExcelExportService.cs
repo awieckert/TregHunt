@@ -7,6 +7,8 @@ namespace TregHunt.Contracts.Services
 {
     public interface IExcelExportService
     {
-        void ExportESearchESumResult(IEnumerable<PubMedESearchESumResponse> results);
+        void ExportESearchESumResult(IEnumerable<FlatESearchESumResult> results);
+
+        IEnumerable<FlatESearchESumResult> FlattenESearchESumResult(IEnumerable<PubMedESearchESumResponse> searchResults);
     }
 }

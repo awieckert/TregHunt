@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TregHunt.Contracts.Helpers;
 using TregHunt.Contracts.Models;
@@ -18,19 +19,73 @@ namespace TregHunt.Services.Services
             _excelExporter = excelExporter;
         }
 
-        public void ExportESearchESumResult(IEnumerable<PubMedESearchESumResponse> results)
+        public void ExportESearchESumResult(IEnumerable<FlatESearchESumResult> results)
         {
             try
             {
-                var dataTable = _dataTableConverter.ListToDataTable(results);
+                var distinctResults = results.Distinct();
+
+                var dataTable = _dataTableConverter.ListToDataTable(distinctResults);
 
                 _excelExporter.ExportToExcel(dataTable);
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                Console.WriteLine($"Error exporting search results to excel", ex);
+                throw;
             }
+        }
+
+        public IEnumerable<FlatESearchESumResult> FlattenESearchESumResult(IEnumerable<PubMedESearchESumResponse> searchResults)
+        {
+            try
+            {
+                Console.WriteLine($"Flattening search results for export to excel file.");
+
+                var flattendResults = new List<FlatESearchESumResult>();
+
+                if (searchResults.Count() == 0) return flattendResults;
+
+                foreach (var result in searchResults)
+                {
+                    foreach (var article in result.Articles)
+                    {
+                        flattendResults.Add(new FlatESearchESumResult
+                        {
+                            SearchTerms = result.SearchGrouping,
+                            ArticleId = article.Id,
+                            Title = article.Title,
+                            Source = article.Source,
+                            PubDate = article.PubDate,
+                            Authors = MapAuthorsToString(article.Authors)
+                        });
+                    }
+                }
+
+                return flattendResults;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error flattening search results.", ex);
+                throw;
+            }
+        }
+
+        private string MapAuthorsToString(List<string> authors)
+        {
+            string stringOfAuthors = "";
+            for (int i = 0; i < authors.Count; i++)
+            {
+                if ((i + 1) == authors.Count)
+                {
+                    stringOfAuthors += $"{authors[i]}";
+                    continue;
+                }
+
+                stringOfAuthors += $"{authors[i]}, ";
+            }
+
+            return stringOfAuthors;
         }
     }
 }

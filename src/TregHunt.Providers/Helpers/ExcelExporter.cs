@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using TregHunt.Contracts.Helpers;
+using TregHunt.Contracts.Models;
 using TregHunt.Services.Settings;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Linq;
 
 namespace TregHunt.Services.Helpers
 {
@@ -19,7 +22,10 @@ namespace TregHunt.Services.Helpers
         {
             try
             {
+                Console.WriteLine("Exporting data table to excel file.");
+
                 DataSet dataSet = new DataSet();
+                dataSet.DataSetName = dataTable.TableName;
                 dataSet.Tables.Add(dataTable);
 
                 // create a excel app, with workbook and worksheet and give a name to it
@@ -48,12 +54,15 @@ namespace TregHunt.Services.Helpers
                     }
                 }
 
-                excelWorkBook.SaveAs(_fileSettings.FileSaveLocation);
+                var timeStamp = DateTime.Now.ToString("yyyy-MM-dd-HHmm");
+
+                excelWorkBook.SaveAs($"{_fileSettings.FileSaveLocation}{dataSet.DataSetName}-{timeStamp}");
                 excelWorkBook.Close();
                 excelApp.Quit();
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Error exporting data table to excel file.", ex);
                 throw ex;
             }
         }

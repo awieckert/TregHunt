@@ -5,5 +5,6 @@ namespace TregHunt.Services.Settings
     {
         public string ApplicationName { get; set; }
         public string DevEmail { get; set; }
+        public string MaxReturnResults { get; set; }
     }
 }
