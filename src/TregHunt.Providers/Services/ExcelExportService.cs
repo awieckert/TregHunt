@@ -23,14 +23,16 @@ namespace TregHunt.Services.Services
         {
             try
             {
-                var dataTable = _dataTableConverter.ListToDataTable(results);
+                var distinctResults = results.Distinct();
+
+                var dataTable = _dataTableConverter.ListToDataTable(distinctResults);
 
                 _excelExporter.ExportToExcel(dataTable);
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                Console.WriteLine($"Error exporting search results to excel", ex);
+                throw;
             }
         }
 
@@ -67,7 +69,6 @@ namespace TregHunt.Services.Services
                 Console.WriteLine($"Error flattening search results.", ex);
                 throw;
             }
-
         }
 
         private string MapAuthorsToString(List<string> authors)

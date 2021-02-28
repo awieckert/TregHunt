@@ -53,8 +53,10 @@ namespace TregHunt.Services.Helpers
                         }
                     }
                 }
-                //add date time but it can't have slashes duuhhhh
-                excelWorkBook.SaveAs($"{_fileSettings.FileSaveLocation}{dataSet.DataSetName}");
+
+                var timeStamp = DateTime.Now.ToString("yyyy-MM-dd-HHmm");
+
+                excelWorkBook.SaveAs($"{_fileSettings.FileSaveLocation}{dataSet.DataSetName}-{timeStamp}");
                 excelWorkBook.Close();
                 excelApp.Quit();
             }

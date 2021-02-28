@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using TregHunt.Contracts.Helpers;
 using TregHunt.Contracts.Models;
@@ -35,11 +36,22 @@ namespace TregHunt.Services.Services
 
                     var response = _pubMedApiService.Get<PubMedESearchResponse>(_queryFormatter.FormatESearchQuery(query));
 
-                    if (response.IdList.Count == 0) continue;
+                    if (response == null || response.IdList == null ||response.IdList.Count == 0)
+                    {
+                        Thread.Sleep(75);
+                        continue;
+                    }
 
                     Console.WriteLine($"ESearch successful for {query.PrimaryTerm} + {query.SecondaryTerm}");
 
                     var postResponse = PubMedESummary(response);
+
+                    if (postResponse.Articles.Count() == 0)
+                    {
+                        Console.WriteLine($"No Esummary results returned for search terms {query.PrimaryTerm} + {query.SecondaryTerm}. It's possible the returned xml from pubmed could not be parse. Check logs for details");
+                        Thread.Sleep(75);
+                        continue;
+                    }
 
                     var fullSearchResult = new PubMedESearchESumResponse(query.PrimaryTerm, query.SecondaryTerm) 
                     {

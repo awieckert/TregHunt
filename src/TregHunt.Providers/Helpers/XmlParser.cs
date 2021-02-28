@@ -28,6 +28,11 @@ namespace TregHunt.Services.Services
 
                 return articles;
             }
+            catch (XmlException xmlException)
+            {
+                Console.WriteLine("Could not parse the returned XML from pubmed. Esummary results for this search will not be included in excel file.", xmlException);
+                return new List<Article>();
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error mapping esummary response to articles", ex);
